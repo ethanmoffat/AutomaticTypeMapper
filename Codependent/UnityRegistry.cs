@@ -60,11 +60,17 @@ namespace Codependent
                     {
                         if (implementsAttribute.IsSingleton)
                         {
-                            RegisterSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                            if (implementsAttribute.BaseType == null)
+                                RegisterSingleton(typeAttributeSet.Type, implementsAttribute.Tag);
+                            else
+                                RegisterSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
                         }
                         else
                         {
-                            RegisterType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                            if (implementsAttribute.BaseType == null)
+                                RegisterType(typeAttributeSet.Type, implementsAttribute.Tag);
+                            else
+                                RegisterType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
                         }
                     }
                 }
