@@ -6,6 +6,9 @@ using Unity;
 
 namespace Codependent
 {
+    /// <summary>
+    /// A type registry that uses UnityContainer as the backing container
+    /// </summary>
     public class UnityRegistry : ITypeRegistry
     {
         private Assembly[] _assemblies;

@@ -4,6 +4,9 @@ using Unity;
 
 namespace Codependent
 {
+    /// <summary>
+    /// Represents a type registry. May be implemented by Unity or other IoC container systems.
+    /// </summary>
     public interface ITypeRegistry
     {
         /// <summary>

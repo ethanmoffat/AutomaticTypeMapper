@@ -23,15 +23,33 @@ namespace Codependent
         /// </summary>
         public string Tag { get; }
 
+        /// <summary>
+        /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes
+        /// </summary>
         public CodependentTypeAttribute()
             : this(null) { }
 
+        /// <summary>
+        /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes.
+        /// </summary>
+        /// <param name="baseType">The type that the tagged type implements</param>
         public CodependentTypeAttribute(Type baseType)
             : this(baseType, false) { }
 
+        /// <summary>
+        /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes.
+        /// </summary>
+        /// <param name="baseType">The type that the tagged type implements</param>
+        /// <param name="singleton">True if the type should be registered as a singleton (container uses one instance of the object)</param>
         public CodependentTypeAttribute(Type baseType, bool singleton)
             : this(baseType, singleton, string.Empty) { }
 
+        /// <summary>
+        /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes.
+        /// </summary>
+        /// <param name="baseType">The type that the tagged type implements</param>
+        /// <param name="singleton">True if the type should be registered as a singleton (container uses one instance of the object)</param>
+        /// <param name="tag">Tag for the type</param>
         public CodependentTypeAttribute(Type baseType, bool singleton, string tag)
         {
             BaseType = baseType;
