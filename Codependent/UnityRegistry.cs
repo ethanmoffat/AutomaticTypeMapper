@@ -74,18 +74,6 @@ namespace Codependent
         }
 
         /// <inheritdoc />
-        public ITypeRegistry RegisterSingleton(Type type, string tag = "")
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        public ITypeRegistry RegisterSingleton(Type type, Type baseType, string tag = "")
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
         public ITypeRegistry RegisterType(Type type, string tag = "")
         {
             throw new NotImplementedException();
@@ -98,13 +86,25 @@ namespace Codependent
         }
 
         /// <inheritdoc />
-        public ITypeRegistry RegisterVariedSingleton(Type type, Type baseType, string tag = "")
+        public ITypeRegistry RegisterVariedType(Type type, Type baseType, string tag = "")
         {
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public ITypeRegistry RegisterVariedType(Type type, Type baseType, string tag = "")
+        public ITypeRegistry RegisterSingleton(Type type, string tag = "")
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public ITypeRegistry RegisterSingleton(Type type, Type baseType, string tag = "")
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <inheritdoc />
+        public ITypeRegistry RegisterVariedSingleton(Type type, Type baseType, string tag = "")
         {
             throw new NotImplementedException();
         }
