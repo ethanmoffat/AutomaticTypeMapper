@@ -6,7 +6,7 @@ namespace Codependent
     /// Attribute for automatic type registrating in Codependent
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class ImplementsAttribute : Attribute
+    public class CodependentTypeAttribute : Attribute
     {
         /// <summary>
         /// The base type that the tagged class implements (optional)
@@ -23,16 +23,16 @@ namespace Codependent
         /// </summary>
         public string Tag { get; }
 
-        public ImplementsAttribute()
+        public CodependentTypeAttribute()
             : this(null) { }
 
-        public ImplementsAttribute(Type baseType)
+        public CodependentTypeAttribute(Type baseType)
             : this(baseType, false) { }
 
-        public ImplementsAttribute(Type baseType, bool singleton)
+        public CodependentTypeAttribute(Type baseType, bool singleton)
             : this(baseType, singleton, string.Empty) { }
 
-        public ImplementsAttribute(Type baseType, bool singleton, string tag)
+        public CodependentTypeAttribute(Type baseType, bool singleton, string tag)
         {
             BaseType = baseType;
             IsSingleton = singleton;

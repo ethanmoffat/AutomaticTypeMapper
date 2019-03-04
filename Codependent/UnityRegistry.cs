@@ -45,14 +45,19 @@ namespace Codependent
             foreach (Assembly assembly in _assemblies)
             {
                 var typeAttributeSets = assembly.GetTypes()
-                    .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(ImplementsAttribute)))
+                    .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(CodependentTypeAttribute)))
                     .Select(x => new
                                  {
                                     Type = x,
-                                    Implements = x.GetCustomAttributes(typeof(ImplementsAttribute))
-                                                  .Cast<ImplementsAttribute>()
+                                    Implements = x.GetCustomAttributes(typeof(CodependentTypeAttribute))
+                                                  .Cast<CodependentTypeAttribute>()
                                                   .ToList()
                                  });
+
+                var baseTypeCount = typeAttributeSets.SelectMany(x => x.Implements)
+                                                     .Where(x => x.BaseType != null)
+                                                     .GroupBy(x => x.BaseType)
+                                                     .ToDictionary(k => k.First().BaseType, v => v.Count());
 
                 foreach (var typeAttributeSet in typeAttributeSets)
                 {
@@ -61,16 +66,30 @@ namespace Codependent
                         if (implementsAttribute.IsSingleton)
                         {
                             if (implementsAttribute.BaseType == null)
+                            {
                                 RegisterSingleton(typeAttributeSet.Type, implementsAttribute.Tag);
+                            }
                             else
-                                RegisterSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                            {
+                                if (baseTypeCount[implementsAttribute.BaseType] > 1)
+                                    RegisterVariedSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                                else
+                                    RegisterSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                            }
                         }
                         else
                         {
                             if (implementsAttribute.BaseType == null)
+                            {
                                 RegisterType(typeAttributeSet.Type, implementsAttribute.Tag);
+                            }
                             else
-                                RegisterType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                            {
+                                if (baseTypeCount[implementsAttribute.BaseType] > 1)
+                                    RegisterVariedType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                                else
+                                    RegisterType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                            }
                         }
                     }
                 }
