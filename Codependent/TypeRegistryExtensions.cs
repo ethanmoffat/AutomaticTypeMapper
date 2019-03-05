@@ -38,7 +38,6 @@
         /// <typeparam name="TBase">Base type that the type implements</typeparam>
         /// <typeparam name="TType">Type to register</typeparam>
         /// <param name="registry">The registry in which the type should be registered</param>
-        /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Type registry (for method chaining)</returns>
         public static ITypeRegistry RegisterVariedType<TBase, TType>(this ITypeRegistry registry) where TType : TBase
         {
@@ -79,7 +78,6 @@
         /// <typeparam name="TBase">Base type that the type implements</typeparam>
         /// <typeparam name="TType">Type to register</typeparam>
         /// <param name="registry">The registry in which the type should be registered</param>
-        /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Type registry (for method chaining)</returns>
         public static ITypeRegistry RegisterVariedSingleton<TBase, TType>(this ITypeRegistry registry) where TType : TBase
         {
