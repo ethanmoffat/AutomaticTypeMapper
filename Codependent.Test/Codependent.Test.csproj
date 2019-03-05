@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Types\BasicClass.cs" />
+    <Compile Include="Types\InterfaceImplementation.cs" />
     <Compile Include="UnityRegistryTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

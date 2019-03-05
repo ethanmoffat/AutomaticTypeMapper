@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity;
-using Unity.Injection;
 using Unity.Lifetime;
-using Unity.Resolution;
 
 namespace Codependent
 {
