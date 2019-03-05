@@ -40,9 +40,9 @@
         /// <param name="registry">The registry in which the type should be registered</param>
         /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Type registry (for method chaining)</returns>
-        public static ITypeRegistry RegisterVariedType<TBase, TType>(this ITypeRegistry registry, string tag = "") where TType : TBase
+        public static ITypeRegistry RegisterVariedType<TBase, TType>(this ITypeRegistry registry) where TType : TBase
         {
-            registry.RegisterVariedType(typeof(TType), typeof(TBase), tag);
+            registry.RegisterVariedType(typeof(TType), typeof(TBase));
             return registry;
         }
 
@@ -81,9 +81,9 @@
         /// <param name="registry">The registry in which the type should be registered</param>
         /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Type registry (for method chaining)</returns>
-        public static ITypeRegistry RegisterVariedSingleton<TBase, TType>(this ITypeRegistry registry, string tag = "") where TType : TBase
+        public static ITypeRegistry RegisterVariedSingleton<TBase, TType>(this ITypeRegistry registry) where TType : TBase
         {
-            registry.RegisterVariedSingleton(typeof(TType), typeof(TBase), tag);
+            registry.RegisterVariedSingleton(typeof(TType), typeof(TBase));
             return registry;
         }
     }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
+using Unity.Resolution;
 
 namespace Codependent
 {
@@ -75,7 +78,7 @@ namespace Codependent
                             else
                             {
                                 if (baseTypeCount[implementsAttribute.BaseType] > 1)
-                                    RegisterVariedSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                                    RegisterVariedSingleton(typeAttributeSet.Type, implementsAttribute.BaseType);
                                 else
                                     RegisterSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
                             }
@@ -89,7 +92,7 @@ namespace Codependent
                             else
                             {
                                 if (baseTypeCount[implementsAttribute.BaseType] > 1)
-                                    RegisterVariedType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                                    RegisterVariedType(typeAttributeSet.Type, implementsAttribute.BaseType);
                                 else
                                     RegisterType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
                             }
@@ -104,49 +107,87 @@ namespace Codependent
         /// <inheritdoc />
         public ITypeRegistry RegisterType(Type type, string tag = "")
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(tag))
+                UnityContainer.RegisterType(type);
+            else
+                UnityContainer.RegisterType(type, tag);
+
+            return this;
         }
 
         /// <inheritdoc />
         public ITypeRegistry RegisterType(Type type, Type baseType, string tag = "")
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(tag))
+                UnityContainer.RegisterType(baseType, type);
+            else
+                UnityContainer.RegisterType(baseType, type, tag);
+
+            return this;
         }
 
         /// <inheritdoc />
-        public ITypeRegistry RegisterVariedType(Type type, Type baseType, string tag = "")
+        public ITypeRegistry RegisterVariedType(Type type, Type baseType)
         {
-            throw new NotImplementedException();
+            RegisterEnumerableIfNeeded(UnityContainer, baseType);
+            UnityContainer.RegisterType(baseType, type, type.Name);
+            return this;
         }
 
         /// <inheritdoc />
         public ITypeRegistry RegisterSingleton(Type type, string tag = "")
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(tag))
+                UnityContainer.RegisterType(type, new ContainerControlledLifetimeManager());
+            else
+                UnityContainer.RegisterType(type, tag, new ContainerControlledLifetimeManager());
+
+            return this;
         }
 
         /// <inheritdoc />
         public ITypeRegistry RegisterSingleton(Type type, Type baseType, string tag = "")
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(tag))
+                UnityContainer.RegisterType(baseType, type, new ContainerControlledLifetimeManager());
+            else
+                UnityContainer.RegisterType(baseType, type, tag, new ContainerControlledLifetimeManager());
+
+            return this;
         }
 
         /// <inheritdoc />
-        public ITypeRegistry RegisterVariedSingleton(Type type, Type baseType, string tag = "")
+        public ITypeRegistry RegisterVariedSingleton(Type type, Type baseType)
         {
-            throw new NotImplementedException();
+            RegisterEnumerableIfNeeded(UnityContainer, baseType);
+            UnityContainer.RegisterType(baseType, type, type.Name, new ContainerControlledLifetimeManager());
+            return this;
         }
 
         /// <inheritdoc />
         public T Resolve<T>(string tag = "")
         {
-            throw new NotImplementedException();
+            return string.IsNullOrWhiteSpace(tag)
+                ? UnityContainer.Resolve<T>()
+                : UnityContainer.Resolve<T>(tag);
         }
 
         /// <inheritdoc />
-        public IEnumerable<T> ResolveAll<T>(string tag = "")
+        public IEnumerable<T> ResolveAll<T>()
         {
-            throw new NotImplementedException();
+            return UnityContainer.ResolveAll<T>();
+        }
+
+        private static void RegisterEnumerableIfNeeded(IUnityContainer container, Type baseType)
+        {
+            var enumerableType = typeof(IEnumerable<>).MakeGenericType(new Type[] { baseType });
+            if (!container.IsRegistered(enumerableType))
+            {
+                container.RegisterFactory(
+                    enumerableType,
+                    c => c.ResolveAll(baseType),
+                    new ContainerControlledLifetimeManager());
+            }
         }
     }
 }

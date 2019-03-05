@@ -37,9 +37,8 @@ namespace Codependent
         /// </summary>
         /// <param name="type">Type to register</param>
         /// <param name="baseType">Base type that the type implements</param>
-        /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Type registry (for method chaining)</returns>
-        ITypeRegistry RegisterVariedType(Type type, Type baseType, string tag = "");
+        ITypeRegistry RegisterVariedType(Type type, Type baseType);
 
         /// <summary>
         /// Registers specified type as a singleton
@@ -63,9 +62,8 @@ namespace Codependent
         /// </summary>
         /// <param name="type">Type to register</param>
         /// <param name="baseType">Base type that the type implements</param>
-        /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Type registry (for method chaining)</returns>
-        ITypeRegistry RegisterVariedSingleton(Type type, Type baseType, string tag = "");
+        ITypeRegistry RegisterVariedSingleton(Type type, Type baseType);
 
         /// <summary>
         /// Resolve the specified type
@@ -79,8 +77,7 @@ namespace Codependent
         /// Resolve all implementing classes of the specified type T registered using RegisterVaried*
         /// </summary>
         /// <typeparam name="T">Type to resolve</typeparam>
-        /// <param name="tag">Tag for the type (optional)</param>
         /// <returns>Instances of all implementing interfaces of the registered type</returns>
-        IEnumerable<T> ResolveAll<T>(string tag = "");
+        IEnumerable<T> ResolveAll<T>();
     }
 }
