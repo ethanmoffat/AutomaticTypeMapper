@@ -26,9 +26,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicClass>();
                 var instance2 = _registry.Resolve<BasicClass>();
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreNotSame(instance, instance2); //not singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.Not.SameAs(instance2)); //not singleton
             }
 
             [Test]
@@ -37,9 +37,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicClassTagged>(nameof(BasicClassTagged));
                 var instance2 = _registry.Resolve<BasicClassTagged>(nameof(BasicClassTagged));
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreNotSame(instance, instance2); //not singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.Not.SameAs(instance2)); //not singleton
             }
 
             [Test]
@@ -48,9 +48,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicClassSingleton>();
                 var instance2 = _registry.Resolve<BasicClassSingleton>();
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreSame(instance, instance2); //singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
 
             [Test]
@@ -59,9 +59,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicClassTaggedSingleton>(nameof(BasicClassTaggedSingleton));
                 var instance2 = _registry.Resolve<BasicClassTaggedSingleton>(nameof(BasicClassTaggedSingleton));
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreSame(instance, instance2); //singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
 
             [TearDown]
@@ -89,9 +89,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicInterface>();
                 var instance2 = _registry.Resolve<BasicInterface>();
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreNotSame(instance, instance2); //not singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.Not.SameAs(instance2)); //not singleton
             }
 
             [Test]
@@ -100,9 +100,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicInterfaceTagged>(nameof(InterfaceImplementationTagged));
                 var instance2 = _registry.Resolve<BasicInterfaceTagged>(nameof(InterfaceImplementationTagged));
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreNotSame(instance, instance2); //not singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.Not.SameAs(instance2)); //not singleton
             }
 
             [Test]
@@ -111,9 +111,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicInterfaceSingleton>();
                 var instance2 = _registry.Resolve<BasicInterfaceSingleton>();
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreSame(instance, instance2); //singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
 
             [Test]
@@ -122,9 +122,9 @@ namespace Codependent.Test
                 var instance = _registry.Resolve<BasicInterfaceTaggedSingleton>(nameof(InterfaceImplementationTaggedSingleton));
                 var instance2 = _registry.Resolve<BasicInterfaceTaggedSingleton>(nameof(InterfaceImplementationTaggedSingleton));
 
-                Assert.IsNotNull(instance);
-                Assert.IsNotNull(instance2);
-                Assert.AreSame(instance, instance2); //singleton
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
 
             [TearDown]
@@ -159,12 +159,15 @@ namespace Codependent.Test
                 Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementationSingleton2>());
                 Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementationSingleton3>());
 
+                //not singletons
                 Assert.That(instances.OfType<VariedInterfaceImplementation1>().Single(),
                             Is.Not.SameAs(instances2.OfType<VariedInterfaceImplementation1>().Single()));
                 Assert.That(instances.OfType<VariedInterfaceImplementation2>().Single(),
                             Is.Not.SameAs(instances2.OfType<VariedInterfaceImplementation2>().Single()));
                 Assert.That(instances.OfType<VariedInterfaceImplementation3>().Single(),
                             Is.Not.SameAs(instances2.OfType<VariedInterfaceImplementation3>().Single()));
+
+                //singletons
                 Assert.That(instances.OfType<VariedInterfaceImplementationSingleton1>().Single(),
                             Is.SameAs(instances2.OfType<VariedInterfaceImplementationSingleton1>().Single()));
                 Assert.That(instances.OfType<VariedInterfaceImplementationSingleton2>().Single(),
