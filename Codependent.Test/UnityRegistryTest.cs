@@ -1,5 +1,6 @@
 ﻿using Codependent.Test.Types;
 using NUnit.Framework;
+using System.Linq;
 using System.Reflection;
 
 namespace Codependent.Test
@@ -124,6 +125,52 @@ namespace Codependent.Test
                 Assert.IsNotNull(instance);
                 Assert.IsNotNull(instance2);
                 Assert.AreSame(instance, instance2); //singleton
+            }
+
+            [TearDown]
+            public void TearDown()
+            {
+                //todo: dispose the container
+            }
+        }
+
+        public class VariedInterfaceImplementationTests
+        {
+            private static ITypeRegistry _registry;
+
+            [SetUp]
+            public void Setup()
+            {
+                var assemblyName = Assembly.GetExecutingAssembly().FullName;
+                _registry = new UnityRegistry(assemblyName);
+                _registry.RegisterDiscoveredTypes();
+            }
+
+            [Test]
+            public void TaggedClass_SameBaseInterface_GetsRegisteredAsVariedType()
+            {
+                var instances = _registry.ResolveAll<VariedInterface>();
+                var instances2 = _registry.ResolveAll<VariedInterface>();
+
+                Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementation1>());
+                Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementation2>());
+                Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementation3>());
+                Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementationSingleton1>());
+                Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementationSingleton2>());
+                Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementationSingleton3>());
+
+                Assert.That(instances.OfType<VariedInterfaceImplementation1>().Single(),
+                            Is.Not.SameAs(instances2.OfType<VariedInterfaceImplementation1>().Single()));
+                Assert.That(instances.OfType<VariedInterfaceImplementation2>().Single(),
+                            Is.Not.SameAs(instances2.OfType<VariedInterfaceImplementation2>().Single()));
+                Assert.That(instances.OfType<VariedInterfaceImplementation3>().Single(),
+                            Is.Not.SameAs(instances2.OfType<VariedInterfaceImplementation3>().Single()));
+                Assert.That(instances.OfType<VariedInterfaceImplementationSingleton1>().Single(),
+                            Is.SameAs(instances2.OfType<VariedInterfaceImplementationSingleton1>().Single()));
+                Assert.That(instances.OfType<VariedInterfaceImplementationSingleton2>().Single(),
+                            Is.SameAs(instances2.OfType<VariedInterfaceImplementationSingleton2>().Single()));
+                Assert.That(instances.OfType<VariedInterfaceImplementationSingleton3>().Single(),
+                            Is.SameAs(instances2.OfType<VariedInterfaceImplementationSingleton3>().Single()));
             }
 
             [TearDown]
