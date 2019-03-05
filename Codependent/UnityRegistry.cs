@@ -12,7 +12,8 @@ namespace Codependent
     /// </summary>
     public class UnityRegistry : ITypeRegistry
     {
-        private Assembly[] _assemblies;
+        private readonly Assembly[] _assemblies;
+        private readonly bool _containerNeedsDispose;
 
         /// <summary>
         /// Unity container backing this instance of UnityRegistry
@@ -24,7 +25,10 @@ namespace Codependent
         /// </summary>
         /// <param name="assemblyNames">Names of the assemblies to use for automatic type discovery</param>
         public UnityRegistry(params string[] assemblyNames)
-            : this(new UnityContainer(), assemblyNames) { }
+            : this(new UnityContainer(), assemblyNames)
+        {
+            _containerNeedsDispose = true;
+        }
 
         /// <summary>
         /// Create a new registry using the specified unity container and assembly names for type discovery
@@ -181,5 +185,37 @@ namespace Codependent
                     new ContainerControlledLifetimeManager());
             }
         }
+
+        #region IDisposable
+
+        /// <summary>
+        /// Dispose managed and unmanaged resources created by this instance
+        /// </summary>
+        /// <param name="disposing">True if called from Dispose(), false if called from finalizer</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_containerNeedsDispose)
+                { 
+                    UnityContainer.Dispose();
+                }
+            }
+        }
+
+        /// <inheritdoc />
+        ~UnityRegistry()
+        {
+            Dispose(false);
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace Codependent
     /// <summary>
     /// Represents a type registry. May be implemented by Unity or other IoC container systems.
     /// </summary>
-    public interface ITypeRegistry
+    public interface ITypeRegistry : IDisposable
     {
         /// <summary>
         /// Registers all types that have the 'Implements' attribute applied to them

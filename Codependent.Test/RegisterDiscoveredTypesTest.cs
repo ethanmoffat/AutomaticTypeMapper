@@ -67,7 +67,7 @@ namespace Codependent.Test
             [TearDown]
             public void TearDown()
             {
-                //todo: dispose the container
+                _registry.Dispose();
             }
         }
 
@@ -130,7 +130,7 @@ namespace Codependent.Test
             [TearDown]
             public void TearDown()
             {
-                //todo: dispose the container
+                _registry.Dispose();
             }
         }
 
@@ -176,7 +176,7 @@ namespace Codependent.Test
             [TearDown]
             public void TearDown()
             {
-                //todo: dispose the container
+                _registry.Dispose();
             }
         }
     }
