@@ -6,7 +6,7 @@ using System.Reflection;
 namespace Codependent.Test
 {
     [TestFixture]
-    public class UnityRegistryTest
+    public class RegisterDiscoveredTypesTest
     {
         public class BasicClassTests
         {

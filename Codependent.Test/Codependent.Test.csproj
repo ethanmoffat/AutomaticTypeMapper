@@ -51,7 +51,7 @@
     <Compile Include="Types\BasicClass.cs" />
     <Compile Include="Types\InterfaceImplementation.cs" />
     <Compile Include="Types\VariedInterfaceImplementation.cs" />
-    <Compile Include="UnityRegistryTest.cs" />
+    <Compile Include="RegisterDiscoveredTypesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
