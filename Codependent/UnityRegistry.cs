@@ -37,12 +37,6 @@ namespace Codependent
             UnityContainer = container;
         }
 
-        private UnityRegistry(UnityContainer container, Assembly[] assemblies)
-        {
-            _assemblies = assemblies;
-            UnityContainer = container;
-        }
-
         /// <inheritdoc />
         public ITypeRegistry RegisterDiscoveredTypes()
         {
