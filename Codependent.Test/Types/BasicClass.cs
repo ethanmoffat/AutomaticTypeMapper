@@ -1,14 +1,14 @@
 ﻿namespace Codependent.Test.Types
 {
-    [CodependentType()]
+    [CodependentType]
     public class BasicClass { }
 
-    [CodependentType(tag: nameof(BasicClassTagged), baseType: null, singleton: false)]
+    [CodependentType(Tag = nameof(BasicClassTagged))]
     public class BasicClassTagged { }
 
-    [CodependentType(singleton: true, baseType: null)]
+    [CodependentType(IsSingleton = true)]
     public class BasicClassSingleton { }
 
-    [CodependentType(singleton: true, tag: nameof(BasicClassTaggedSingleton), baseType: null)]
+    [CodependentType(IsSingleton = true, Tag = nameof(BasicClassTaggedSingleton))]
     public class BasicClassTaggedSingleton { }
 }

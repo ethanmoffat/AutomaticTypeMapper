@@ -11,17 +11,17 @@ namespace Codependent
         /// <summary>
         /// The base type that the tagged class implements (optional)
         /// </summary>
-        public Type BaseType { get; }
+        public Type BaseType { get; set; }
 
         /// <summary>
         /// True if the type is a singleton (e.g. state must be preserved in the registry)
         /// </summary>
-        public bool IsSingleton { get; }
+        public bool IsSingleton { get; set; }
 
         /// <summary>
         /// Tag for the type (optional). Tag will be ignored for varied types
         /// </summary>
-        public string Tag { get; }
+        public string Tag { get; set; }
 
         /// <summary>
         /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes

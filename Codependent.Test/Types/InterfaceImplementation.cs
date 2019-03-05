@@ -7,16 +7,16 @@
 
     public interface BasicInterfaceTagged { }
 
-    [CodependentType(typeof(BasicInterfaceTagged), tag: nameof(InterfaceImplementationTagged), singleton: false)]
+    [CodependentType(typeof(BasicInterfaceTagged), Tag = nameof(InterfaceImplementationTagged))]
     public class InterfaceImplementationTagged : BasicInterfaceTagged { }
 
     public interface BasicInterfaceSingleton { }
 
-    [CodependentType(typeof(BasicInterfaceSingleton), singleton: true)]
+    [CodependentType(typeof(BasicInterfaceSingleton), IsSingleton = true)]
     public class InterfaceImplementationSingleton : BasicInterfaceSingleton { }
 
     public interface BasicInterfaceTaggedSingleton { }
 
-    [CodependentType(typeof(BasicInterfaceTaggedSingleton), tag: nameof(InterfaceImplementationTaggedSingleton), singleton: true)]
+    [CodependentType(typeof(BasicInterfaceTaggedSingleton), Tag = nameof(InterfaceImplementationTaggedSingleton), IsSingleton = true)]
     public class InterfaceImplementationTaggedSingleton : BasicInterfaceTaggedSingleton { }
 }
