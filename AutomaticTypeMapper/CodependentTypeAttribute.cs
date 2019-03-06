@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Codependent
+namespace AutomaticTypeMapper
 {
     /// <summary>
     /// Attribute for automatic type registrating in Codependent

@@ -1,9 +1,9 @@
-﻿using Codependent.Test.Types;
+﻿using AutomaticTypeMapper.Test.Types;
 using NUnit.Framework;
 using System.Linq;
 using System.Reflection;
 
-namespace Codependent.Test
+namespace AutomaticTypeMapper.Test
 {
     [TestFixture]
     public class RegisterDiscoveredTypesTest

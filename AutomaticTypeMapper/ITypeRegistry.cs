@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Unity;
 
-namespace Codependent
+namespace AutomaticTypeMapper
 {
     /// <summary>
     /// Represents a type registry. May be implemented by Unity or other IoC container systems.

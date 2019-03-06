@@ -5,7 +5,7 @@ using System.Reflection;
 using Unity;
 using Unity.Lifetime;
 
-namespace Codependent
+namespace AutomaticTypeMapper
 {
     /// <summary>
     /// A type registry that uses UnityContainer as the backing container

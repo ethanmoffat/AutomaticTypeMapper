@@ -1,4 +1,4 @@
-﻿namespace Codependent
+﻿namespace AutomaticTypeMapper
 {
     /// <summary>
     /// Extensions to make registration of types in an ITypeRegistry easier

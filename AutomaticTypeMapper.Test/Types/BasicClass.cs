@@ -1,4 +1,4 @@
-﻿namespace Codependent.Test.Types
+﻿namespace AutomaticTypeMapper.Test.Types
 {
     [CodependentType]
     public class BasicClass { }
