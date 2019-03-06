@@ -47,12 +47,12 @@ namespace AutomaticTypeMapper
             foreach (Assembly assembly in _assemblies)
             {
                 var typeAttributeSets = assembly.GetTypes()
-                    .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(CodependentTypeAttribute)))
+                    .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(MappedTypeAttribute)))
                     .Select(x => new
                                  {
                                     Type = x,
-                                    Implements = x.GetCustomAttributes(typeof(CodependentTypeAttribute))
-                                                  .Cast<CodependentTypeAttribute>()
+                                    Implements = x.GetCustomAttributes(typeof(MappedTypeAttribute))
+                                                  .Cast<MappedTypeAttribute>()
                                                   .ToList()
                                  });
 

@@ -44,7 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodependentTypeAttribute.cs" />
+    <Compile Include="MappedTypeAttribute.cs" />
     <Compile Include="ITypeRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeRegistryExtensions.cs" />

@@ -3,10 +3,10 @@
 namespace AutomaticTypeMapper
 {
     /// <summary>
-    /// Attribute for automatic type registrating in Codependent
+    /// Attribute for automatic type registration
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class CodependentTypeAttribute : Attribute
+    public class MappedTypeAttribute : Attribute
     {
         /// <summary>
         /// The base type that the tagged class implements (optional)
@@ -26,14 +26,14 @@ namespace AutomaticTypeMapper
         /// <summary>
         /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes
         /// </summary>
-        public CodependentTypeAttribute()
+        public MappedTypeAttribute()
             : this(null) { }
 
         /// <summary>
         /// Discover the tagged type automatically when calling ITypeRegistry.RegisterDiscoveredTypes.
         /// </summary>
         /// <param name="baseType">The type that the tagged type implements</param>
-        public CodependentTypeAttribute(Type baseType)
+        public MappedTypeAttribute(Type baseType)
             : this(baseType, false) { }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace AutomaticTypeMapper
         /// </summary>
         /// <param name="baseType">The type that the tagged type implements</param>
         /// <param name="singleton">True if the type should be registered as a singleton (container uses one instance of the object)</param>
-        public CodependentTypeAttribute(Type baseType, bool singleton)
+        public MappedTypeAttribute(Type baseType, bool singleton)
             : this(baseType, singleton, string.Empty) { }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace AutomaticTypeMapper
         /// <param name="baseType">The type that the tagged type implements</param>
         /// <param name="singleton">True if the type should be registered as a singleton (container uses one instance of the object)</param>
         /// <param name="tag">Tag for the type (optional). Tag will be ignored for varied types</param>
-        public CodependentTypeAttribute(Type baseType, bool singleton, string tag)
+        public MappedTypeAttribute(Type baseType, bool singleton, string tag)
         {
             BaseType = baseType;
             IsSingleton = singleton;

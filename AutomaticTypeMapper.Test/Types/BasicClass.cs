@@ -1,14 +1,14 @@
 ﻿namespace AutomaticTypeMapper.Test.Types
 {
-    [CodependentType]
+    [MappedType]
     public class BasicClass { }
 
-    [CodependentType(Tag = nameof(BasicClassTagged))]
+    [MappedType(Tag = nameof(BasicClassTagged))]
     public class BasicClassTagged { }
 
-    [CodependentType(IsSingleton = true)]
+    [MappedType(IsSingleton = true)]
     public class BasicClassSingleton { }
 
-    [CodependentType(IsSingleton = true, Tag = nameof(BasicClassTaggedSingleton))]
+    [MappedType(IsSingleton = true, Tag = nameof(BasicClassTaggedSingleton))]
     public class BasicClassTaggedSingleton { }
 }
