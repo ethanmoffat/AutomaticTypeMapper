@@ -16,8 +16,8 @@
     </metadata>
 
     <files>
-        <file src="../bin/Debug/AutomaticTypeMapper.dll" target="lib/net462" />
-        <file src="../bin/Debug/AutomaticTypeMapper.pdb" target="lib/net462" />
-        <file src="../bin/Debug/AutomaticTypeMapper.xml" target="lib/net462" />
+        <file src="../bin/Release/AutomaticTypeMapper.dll" target="lib/net462" />
+        <file src="../bin/Release/AutomaticTypeMapper.pdb" target="lib/net462" />
+        <file src="../bin/Release/AutomaticTypeMapper.xml" target="lib/net462" />
     </files>
 </package>
