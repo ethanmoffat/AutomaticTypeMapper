@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+    <metadata>
+        <id>AutomaticTypeMapper</id>
+        <version>1.0.0</version>
+        <authors>Ethan Moffat</authors>
+        <owners>ethanmoffat</owners>
+        <license type="expression">MIT</license>
+        <projectUrl>http://github.com/ethanmoffat/AutomaticTypeMapper</projectUrl>
+        <!--todo: <iconUrl></iconUrl> -->
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <releaseNotes>Initial Release</releaseNotes>
+        <description>Automatic type discovery and mapping for C# projects</description>
+        <copyright>Copyright © 2019 Ethan Moffat</copyright>
+        <tags>IoC dependency C# inversion-of-control dependency-injection</tags>
+    </metadata>
+
+    <files>
+        <file src="../bin/Debug/AutomaticTypeMapper.dll" target="lib/net462" />
+        <file src="../bin/Debug/AutomaticTypeMapper.pdb" target="lib/net462" />
+        <file src="../bin/Debug/AutomaticTypeMapper.xml" target="lib/net462" />
+    </files>
+</package>
