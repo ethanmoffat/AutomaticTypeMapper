@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codependent", "Codependent\Codependent.csproj", "{02B42C8F-2128-4772-9107-EF3379CD0FAD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticTypeMapper", "AutomaticTypeMapper\AutomaticTypeMapper.csproj", "{02B42C8F-2128-4772-9107-EF3379CD0FAD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Codependent.Test", "Codependent.Test\Codependent.Test.csproj", "{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticTypeMapper.Test", "AutomaticTypeMapper.Test\AutomaticTypeMapper.Test.csproj", "{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

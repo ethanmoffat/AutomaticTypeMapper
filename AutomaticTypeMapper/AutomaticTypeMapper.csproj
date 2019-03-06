@@ -7,8 +7,8 @@
     <ProjectGuid>{02B42C8F-2128-4772-9107-EF3379CD0FAD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Codependent</RootNamespace>
-    <AssemblyName>Codependent</AssemblyName>
+    <RootNamespace>AutomaticTypeMapper</RootNamespace>
+    <AssemblyName>AutomaticTypeMapper</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\bin\Debug\Codependent.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Debug\AutomaticTypeMapper.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\bin\Release\</OutputPath>
@@ -31,7 +31,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <DocumentationFile>..\bin\Release\Codependent.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\AutomaticTypeMapper.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

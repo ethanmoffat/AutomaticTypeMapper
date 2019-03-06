@@ -9,8 +9,8 @@
     <ProjectGuid>{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Codependent.Test</RootNamespace>
-    <AssemblyName>Codependent.Test</AssemblyName>
+    <RootNamespace>AutomaticTypeMapper.Test</RootNamespace>
+    <AssemblyName>AutomaticTypeMapper.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -58,9 +58,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Codependent\Codependent.csproj">
+    <ProjectReference Include="..\AutomaticTypeMapper\AutomaticTypeMapper.csproj">
       <Project>{02b42c8f-2128-4772-9107-ef3379cd0fad}</Project>
-      <Name>Codependent</Name>
+      <Name>AutomaticTypeMapper</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
