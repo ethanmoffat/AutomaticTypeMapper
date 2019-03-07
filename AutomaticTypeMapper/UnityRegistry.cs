@@ -51,46 +51,46 @@ namespace AutomaticTypeMapper
                     .Select(x => new
                                  {
                                     Type = x,
-                                    Implements = x.GetCustomAttributes(typeof(MappedTypeAttribute))
-                                                  .Cast<MappedTypeAttribute>()
-                                                  .ToList()
+                                    MappedTypes = x.GetCustomAttributes(typeof(MappedTypeAttribute))
+                                                   .Cast<MappedTypeAttribute>()
+                                                   .ToList()
                                  });
 
-                var baseTypeCount = typeAttributeSets.SelectMany(x => x.Implements)
+                var baseTypeCount = typeAttributeSets.SelectMany(x => x.MappedTypes)
                                                      .Where(x => x.BaseType != null)
                                                      .GroupBy(x => x.BaseType)
                                                      .ToDictionary(k => k.First().BaseType, v => v.Count());
 
                 foreach (var typeAttributeSet in typeAttributeSets)
                 {
-                    foreach (var implementsAttribute in typeAttributeSet.Implements)
+                    foreach (var mapping in typeAttributeSet.MappedTypes)
                     {
-                        if (implementsAttribute.IsSingleton)
+                        if (mapping.IsSingleton)
                         {
-                            if (implementsAttribute.BaseType == null)
+                            if (mapping.BaseType == null)
                             {
-                                RegisterSingleton(typeAttributeSet.Type, implementsAttribute.Tag);
+                                RegisterSingleton(typeAttributeSet.Type, mapping.Tag);
                             }
                             else
                             {
-                                if (baseTypeCount[implementsAttribute.BaseType] > 1)
-                                    RegisterVariedSingleton(typeAttributeSet.Type, implementsAttribute.BaseType);
+                                if (baseTypeCount[mapping.BaseType] > 1)
+                                    RegisterVariedSingleton(typeAttributeSet.Type, mapping.BaseType);
                                 else
-                                    RegisterSingleton(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                                    RegisterSingleton(typeAttributeSet.Type, mapping.BaseType, mapping.Tag);
                             }
                         }
                         else
                         {
-                            if (implementsAttribute.BaseType == null)
+                            if (mapping.BaseType == null)
                             {
-                                RegisterType(typeAttributeSet.Type, implementsAttribute.Tag);
+                                RegisterType(typeAttributeSet.Type, mapping.Tag);
                             }
                             else
                             {
-                                if (baseTypeCount[implementsAttribute.BaseType] > 1)
-                                    RegisterVariedType(typeAttributeSet.Type, implementsAttribute.BaseType);
+                                if (baseTypeCount[mapping.BaseType] > 1)
+                                    RegisterVariedType(typeAttributeSet.Type, mapping.BaseType);
                                 else
-                                    RegisterType(typeAttributeSet.Type, implementsAttribute.BaseType, implementsAttribute.Tag);
+                                    RegisterType(typeAttributeSet.Type, mapping.BaseType, mapping.Tag);
                             }
                         }
                     }
