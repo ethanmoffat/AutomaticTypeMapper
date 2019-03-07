@@ -144,10 +144,12 @@ namespace AutomaticTypeMapper
         /// <inheritdoc />
         public ITypeRegistry RegisterSingleton(Type type, Type baseType, string tag = "")
         {
+            RegisterInstanceIfNeeded(UnityContainer, type, tag);
+
             if (string.IsNullOrWhiteSpace(tag))
-                UnityContainer.RegisterType(baseType, type, new ContainerControlledLifetimeManager());
+                UnityContainer.RegisterType(baseType, type);
             else
-                UnityContainer.RegisterType(baseType, type, tag, new ContainerControlledLifetimeManager());
+                UnityContainer.RegisterType(baseType, type, tag);
 
             return this;
         }
@@ -156,7 +158,8 @@ namespace AutomaticTypeMapper
         public ITypeRegistry RegisterVariedSingleton(Type type, Type baseType)
         {
             RegisterEnumerableIfNeeded(UnityContainer, baseType);
-            UnityContainer.RegisterType(baseType, type, type.Name, new ContainerControlledLifetimeManager());
+            RegisterInstanceIfNeeded(UnityContainer, type, type.Name);
+            UnityContainer.RegisterType(baseType, type, type.Name);
             return this;
         }
 
@@ -183,6 +186,17 @@ namespace AutomaticTypeMapper
                     enumerableType,
                     c => c.ResolveAll(baseType),
                     new ContainerControlledLifetimeManager());
+            }
+        }
+
+        private static void RegisterInstanceIfNeeded(IUnityContainer container, Type type, string tag = "")
+        {
+            if (!container.IsRegistered(type))
+            {
+                if (string.IsNullOrWhiteSpace(tag))
+                    container.RegisterType(type, new ContainerControlledLifetimeManager());
+                else
+                    container.RegisterType(type, tag, new ContainerControlledLifetimeManager());
             }
         }
 
