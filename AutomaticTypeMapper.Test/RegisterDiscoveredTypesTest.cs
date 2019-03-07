@@ -182,5 +182,46 @@ namespace AutomaticTypeMapper.Test
                 _registry.Dispose();
             }
         }
+
+        public class MultipleAttributesTests
+        {
+            private static ITypeRegistry _registry;
+
+            [SetUp]
+            public void Setup()
+            {
+                var assemblyName = Assembly.GetExecutingAssembly().FullName;
+                _registry = new UnityRegistry(assemblyName);
+                _registry.RegisterDiscoveredTypes();
+            }
+
+            [Test]
+            public void TaggedClass_MultipleBaseInterfaces_GetsRegisteredAsBoth()
+            {
+                var instance = _registry.Resolve<BaseInterface1>();
+                var instance2 = _registry.Resolve<BaseInterface2>();
+
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.Not.SameAs(instance2));
+            }
+
+            [Test]
+            public void TaggedClass_MultipleBaseInterfaces_Singleton_SameInstanceRegisteredAsBoth()
+            {
+                var instance = _registry.Resolve<BaseInterfaceSingleton1>();
+                var instance2 = _registry.Resolve<BaseInterfaceSingleton2>();
+
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.SameAs(instance2));
+            }
+
+            [TearDown]
+            public void TearDown()
+            {
+                _registry.Dispose();
+            }
+        }
     }
 }
