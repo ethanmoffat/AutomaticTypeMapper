@@ -1,4 +1,5 @@
 ﻿using AutomaticTypeMapper.Test.Types;
+using InvalidTypes;
 using NUnit.Framework;
 using System.Linq;
 using System.Reflection;
@@ -215,6 +216,15 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instance, Is.Not.Null);
                 Assert.That(instance2, Is.Not.Null);
                 Assert.That(instance, Is.SameAs(instance2));
+            }
+
+            [Test]
+            public void TaggedClass_WithSameInterfaceMultipleTimes_ThrowsInvalidOperationException()
+            {
+                const string assemblyName = "InvalidTypes";
+                var registry = new UnityRegistry(assemblyName);
+
+                Assert.That(registry.RegisterDiscoveredTypes, Throws.InvalidOperationException);
             }
 
             [TearDown]

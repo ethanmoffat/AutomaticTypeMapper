@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Unity;
 using Unity.Lifetime;
 
@@ -63,6 +64,21 @@ namespace AutomaticTypeMapper
 
                 foreach (var typeAttributeSet in typeAttributeSets)
                 {
+                    var invalidCases = typeAttributeSet.MappedTypes
+                                                       .GroupBy(x => x.BaseType)
+                                                       .Where(x => x.Count() > 1);
+
+                    if (invalidCases.Any())
+                    {
+                        var sb = new StringBuilder();
+                        sb.AppendLine($"Type {typeAttributeSet.Type.Name} is mapped to the following types multiple times:");
+
+                        foreach (var invalid in invalidCases.SelectMany(x => x.Select(y => y.BaseType.Name)).Distinct())
+                            sb.AppendLine($"  - {invalid}");
+
+                        throw new InvalidOperationException(sb.ToString());
+                    }
+
                     foreach (var mapping in typeAttributeSet.MappedTypes)
                     {
                         if (mapping.IsSingleton)
