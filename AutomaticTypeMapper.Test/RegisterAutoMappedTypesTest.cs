@@ -149,8 +149,8 @@ namespace AutomaticTypeMapper.Test
             [Test]
             public void TaggedClass_SameBaseInterface_GetsRegisteredAsVariedType()
             {
-                var instances = _registry.ResolveAll<AutoDiscovery.VariedInterface>();
-                var instances2 = _registry.ResolveAll<AutoDiscovery.VariedInterface>();
+                var instances = _registry.ResolveAll<AutoDiscovery.VariedInterface>().ToList();
+                var instances2 = _registry.ResolveAll<AutoDiscovery.VariedInterface>().ToList();
 
                 Assert.That(instances, Has.One.AssignableFrom<AutoDiscovery.VariedInterfaceImplementation1>());
                 Assert.That(instances, Has.One.AssignableFrom<AutoDiscovery.VariedInterfaceImplementation2>());
@@ -218,10 +218,9 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            [Ignore("TODO: Invalid case for Auto base type discovery")]
             public void TaggedClass_WithSameInterfaceMultipleTimes_ThrowsInvalidOperationException()
             {
-                const string assemblyName = "InvalidTypes";
+                const string assemblyName = "InvalidAutoTypes";
                 var registry = new UnityRegistry(assemblyName);
 
                 Assert.That(registry.RegisterDiscoveredTypes, Throws.InvalidOperationException);
