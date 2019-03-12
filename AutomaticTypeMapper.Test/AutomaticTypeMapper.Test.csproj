@@ -51,6 +51,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RegisterAutoMappedTypesTest.cs" />
+    <Compile Include="Types\AutoDiscovery.cs" />
     <Compile Include="Types\BasicClass.cs" />
     <Compile Include="Types\InterfaceImplementation.cs" />
     <Compile Include="Types\MultipleAttributes.cs" />
