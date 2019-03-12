@@ -44,6 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMappedTypeAttribute.cs" />
     <Compile Include="BaseRegistry.cs" />
     <Compile Include="Internal\TypeAttributeSet.cs" />
     <Compile Include="MappedTypeAttribute.cs" />
