@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using AutomaticTypeMapper.Internal;
 
 namespace AutomaticTypeMapper
@@ -28,65 +27,32 @@ namespace AutomaticTypeMapper
         {
             foreach (var assembly in _assemblies)
             {
-                var typeAttributeSets = assembly.GetTypes()
-                    .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(MappedTypeAttribute)))
-                    .Select(x => new TypeAttributeSet<MappedTypeAttribute>(
-                        type: x,
-                        mappedTypes: x.GetCustomAttributes(typeof(MappedTypeAttribute))
-                                      .Cast<MappedTypeAttribute>()
-                                      .ToList()))
-                    .ToList();
+                var mappedTypeAttributeSets = GetTypeAttributeSets<MappedTypeAttribute>(assembly);
+                var autoSets = GetTypeAttributeSets<AutoMappedTypeAttribute>(assembly);
 
-                var baseTypeCount = typeAttributeSets.SelectMany(x => x.MappedTypes)
-                                                     .Where(x => x.BaseType != null)
-                                                     .GroupBy(x => x.BaseType)
-                                                     .ToDictionary(k => k.First().BaseType, v => v.Count());
-
-                foreach (var typeAttributeSet in typeAttributeSets)
+                var typesWithBothAttributes = mappedTypeAttributeSets.Select(x => x.Type).Intersect(autoSets.Select(x => x.Type)).ToList();
+                if (typesWithBothAttributes.Any())
                 {
-                    var invalidCases = typeAttributeSet.MappedTypes
-                                                       .GroupBy(x => x.BaseType)
-                                                       .Where(x => x.Count() > 1)
-                                                       .ToList();
-
-                    if (invalidCases.Any())
-                    {
-                        var sb = BuildTypeDiscoveryErrorMessage(typeAttributeSet.Type.Name, invalidCases);
-                        throw new InvalidOperationException(sb.ToString());
-                    }
-
-                    foreach (var mapping in typeAttributeSet.MappedTypes)
-                    {
-                        if (mapping.IsSingleton)
-                        {
-                            if (mapping.BaseType == null)
-                            {
-                                RegisterSingleton(typeAttributeSet.Type, mapping.Tag);
-                            }
-                            else
-                            {
-                                if (baseTypeCount[mapping.BaseType] > 1)
-                                    RegisterVariedSingleton(typeAttributeSet.Type, mapping.BaseType);
-                                else
-                                    RegisterSingleton(typeAttributeSet.Type, mapping.BaseType, mapping.Tag);
-                            }
-                        }
-                        else
-                        {
-                            if (mapping.BaseType == null)
-                            {
-                                RegisterType(typeAttributeSet.Type, mapping.Tag);
-                            }
-                            else
-                            {
-                                if (baseTypeCount[mapping.BaseType] > 1)
-                                    RegisterVariedType(typeAttributeSet.Type, mapping.BaseType);
-                                else
-                                    RegisterType(typeAttributeSet.Type, mapping.BaseType, mapping.Tag);
-                            }
-                        }
-                    }
+                    var typeName = typesWithBothAttributes.First();
+                    throw new InvalidOperationException($"MappedType and AutoMappedType are not supported on the same type ({typeName}).");
                 }
+
+                mappedTypeAttributeSets.AddRange(GetMappedTypeAttributesFromAutoAttributes(autoSets));
+
+                var multipleSameBaseTypesForImplementingType = mappedTypeAttributeSets.Where(
+                    set => set.MappedTypes.GroupBy(x => x.BaseType).Any(x => x.Count() > 1)).ToList();
+                if (multipleSameBaseTypesForImplementingType.Any())
+                {
+                    var typeName = multipleSameBaseTypesForImplementingType.First().Type.Name;
+                    throw new InvalidOperationException($"Type {typeName} is mapped to the same base type multiple times");
+                }
+
+                var baseTypeCount = mappedTypeAttributeSets.SelectMany(x => x.MappedTypes)
+                                                           .Where(x => x.BaseType != null)
+                                                           .GroupBy(x => x.BaseType)
+                                                           .ToDictionary(k => k.First().BaseType, v => v.Count());
+
+                RegisterDiscoveredTypes(mappedTypeAttributeSets, baseTypeCount);
             }
 
             return this;
@@ -137,15 +103,70 @@ namespace AutomaticTypeMapper
         {
         }
 
-        private static StringBuilder BuildTypeDiscoveryErrorMessage(string typeName, IEnumerable<IGrouping<Type, MappedTypeAttribute>> invalidCases)
+        private static List<TypeAttributeSet<T>> GetTypeAttributeSets<T>(Assembly assembly)
+            where T : Attribute
         {
-            var sb = new StringBuilder();
-            sb.AppendLine($"Type {typeName} is mapped to the following types multiple times:");
+            return assembly.GetTypes()
+                .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(T)))
+                .Select(x => new TypeAttributeSet<T>(
+                    type: x,
+                    mappedTypes: x.GetCustomAttributes(typeof(T))
+                                  .Cast<T>()
+                                  .ToList()))
+                .ToList();
+        }
 
-            foreach (var invalid in invalidCases.SelectMany(x => x.Select(y => y.BaseType.Name)).Distinct())
-                sb.AppendLine($"  - {invalid}");
+        private static IEnumerable<TypeAttributeSet<MappedTypeAttribute>> GetMappedTypeAttributesFromAutoAttributes(IEnumerable<TypeAttributeSet<AutoMappedTypeAttribute>> autoSets)
+        {
+            foreach (var autoSet in autoSets)
+            {
+                var attribute = autoSet.MappedTypes.Single();
+                var baseTypes = autoSet.Type.FindInterfaces((t, o) => t.IsInterface, null);
 
-            return sb;
+                yield return new TypeAttributeSet<MappedTypeAttribute>(
+                    autoSet.Type,
+                    baseTypes.Select(bt => new MappedTypeAttribute(bt, attribute.IsSingleton, attribute.Tag)).ToList()
+                );
+            }
+        }
+
+        private void RegisterDiscoveredTypes(IEnumerable<TypeAttributeSet<MappedTypeAttribute>> mappedTypeAttributeSets,
+                                             IDictionary<Type, int> baseTypeCount)
+        {
+            foreach (var typeAttributeSet in mappedTypeAttributeSets)
+            {
+                foreach (var mapping in typeAttributeSet.MappedTypes)
+                {
+                    if (mapping.IsSingleton)
+                    {
+                        if (mapping.BaseType == null)
+                        {
+                            RegisterSingleton(typeAttributeSet.Type, mapping.Tag);
+                        }
+                        else
+                        {
+                            if (baseTypeCount[mapping.BaseType] > 1)
+                                RegisterVariedSingleton(typeAttributeSet.Type, mapping.BaseType);
+                            else
+                                RegisterSingleton(typeAttributeSet.Type, mapping.BaseType, mapping.Tag);
+                        }
+                    }
+                    else
+                    {
+                        if (mapping.BaseType == null)
+                        {
+                            RegisterType(typeAttributeSet.Type, mapping.Tag);
+                        }
+                        else
+                        {
+                            if (baseTypeCount[mapping.BaseType] > 1)
+                                RegisterVariedType(typeAttributeSet.Type, mapping.BaseType);
+                            else
+                                RegisterType(typeAttributeSet.Type, mapping.BaseType, mapping.Tag);
+                        }
+                    }
+                }
+            }
         }
     }
 }

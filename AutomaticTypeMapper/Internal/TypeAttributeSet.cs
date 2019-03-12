@@ -9,7 +9,7 @@ namespace AutomaticTypeMapper.Internal
 
         internal IList<T> MappedTypes { get; }
 
-        public TypeAttributeSet(Type type, IList<T> mappedTypes)
+        internal TypeAttributeSet(Type type, IList<T> mappedTypes)
         {
             Type = type;
             MappedTypes = mappedTypes;
