@@ -123,9 +123,13 @@ namespace AutomaticTypeMapper
                 var attribute = autoSet.MappedTypes.Single();
                 var baseTypes = autoSet.Type.FindInterfaces((t, o) => t.IsInterface, null);
 
+                var mappedTypeAttributeList = baseTypes.Select(bt => new MappedTypeAttribute(bt, attribute.IsSingleton, attribute.Tag)).ToList();
+                if (!mappedTypeAttributeList.Any())
+                    mappedTypeAttributeList.Add(new MappedTypeAttribute(null, attribute.IsSingleton, attribute.Tag));
+
                 yield return new TypeAttributeSet<MappedTypeAttribute>(
                     autoSet.Type,
-                    baseTypes.Select(bt => new MappedTypeAttribute(bt, attribute.IsSingleton, attribute.Tag)).ToList()
+                    mappedTypeAttributeList
                 );
             }
         }
