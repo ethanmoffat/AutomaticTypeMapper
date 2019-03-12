@@ -55,7 +55,8 @@ namespace AutomaticTypeMapper
                                     MappedTypes = x.GetCustomAttributes(typeof(MappedTypeAttribute))
                                                    .Cast<MappedTypeAttribute>()
                                                    .ToList()
-                                 });
+                                 })
+                    .ToList();
 
                 var baseTypeCount = typeAttributeSets.SelectMany(x => x.MappedTypes)
                                                      .Where(x => x.BaseType != null)
@@ -66,7 +67,8 @@ namespace AutomaticTypeMapper
                 {
                     var invalidCases = typeAttributeSet.MappedTypes
                                                        .GroupBy(x => x.BaseType)
-                                                       .Where(x => x.Count() > 1);
+                                                       .Where(x => x.Count() > 1)
+                                                       .ToList();
 
                     if (invalidCases.Any())
                     {
@@ -195,7 +197,7 @@ namespace AutomaticTypeMapper
 
         private static void RegisterEnumerableIfNeeded(IUnityContainer container, Type baseType)
         {
-            var enumerableType = typeof(IEnumerable<>).MakeGenericType(new Type[] { baseType });
+            var enumerableType = typeof(IEnumerable<>).MakeGenericType(baseType);
             if (!container.IsRegistered(enumerableType))
             {
                 container.RegisterFactory(
