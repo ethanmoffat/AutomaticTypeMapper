@@ -44,6 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseRegistry.cs" />
     <Compile Include="MappedTypeAttribute.cs" />
     <Compile Include="ITypeRegistry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
