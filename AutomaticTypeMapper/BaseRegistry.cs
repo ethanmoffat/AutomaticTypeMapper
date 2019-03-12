@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AutomaticTypeMapper.Internal;
 
 namespace AutomaticTypeMapper
 {
@@ -29,13 +30,11 @@ namespace AutomaticTypeMapper
             {
                 var typeAttributeSets = assembly.GetTypes()
                     .Where(x => x.CustomAttributes.Any(y => y.AttributeType == typeof(MappedTypeAttribute)))
-                    .Select(x => new
-                    {
-                        Type = x,
-                        MappedTypes = x.GetCustomAttributes(typeof(MappedTypeAttribute))
-                                       .Cast<MappedTypeAttribute>()
-                                       .ToList()
-                    })
+                    .Select(x => new TypeAttributeSet<MappedTypeAttribute>(
+                        type: x,
+                        mappedTypes: x.GetCustomAttributes(typeof(MappedTypeAttribute))
+                                      .Cast<MappedTypeAttribute>()
+                                      .ToList()))
                     .ToList();
 
                 var baseTypeCount = typeAttributeSets.SelectMany(x => x.MappedTypes)
