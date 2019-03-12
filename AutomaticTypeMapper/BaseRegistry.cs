@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using AutomaticTypeMapper.Internal;
@@ -99,6 +100,7 @@ namespace AutomaticTypeMapper
         /// Dispose managed and unmanaged resources created by this instance
         /// </summary>
         /// <param name="disposing">True if called from Dispose(), false if called from finalizer</param>
+        [ExcludeFromCodeCoverage]
         protected virtual void Dispose(bool disposing)
         {
         }

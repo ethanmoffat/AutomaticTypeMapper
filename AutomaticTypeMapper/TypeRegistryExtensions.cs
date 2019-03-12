@@ -1,8 +1,11 @@
-﻿namespace AutomaticTypeMapper
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace AutomaticTypeMapper
 {
     /// <summary>
     /// Extensions to make registration of types in an ITypeRegistry easier
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public static class TypeRegistryExtensions
     {
         /// <summary>
