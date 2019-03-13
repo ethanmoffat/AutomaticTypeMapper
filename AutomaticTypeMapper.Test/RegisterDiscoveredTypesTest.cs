@@ -150,8 +150,8 @@ namespace AutomaticTypeMapper.Test
             [Test]
             public void TaggedClass_SameBaseInterface_GetsRegisteredAsVariedType()
             {
-                var instances = _registry.ResolveAll<VariedInterface>();
-                var instances2 = _registry.ResolveAll<VariedInterface>();
+                var instances = _registry.ResolveAll<VariedInterface>().ToList();
+                var instances2 = _registry.ResolveAll<VariedInterface>().ToList();
 
                 Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementation1>());
                 Assert.That(instances, Has.One.AssignableFrom<VariedInterfaceImplementation2>());
