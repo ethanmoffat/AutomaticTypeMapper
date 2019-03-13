@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Invalid types for use in AutomaticTypeMapper.Test (AutoMappedType attribute)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("InvalidTypes")]
+[assembly: AssemblyProduct("InvalidAutoTypes")]
 [assembly: AssemblyCopyright("Copyright © Ethan Moffat 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
