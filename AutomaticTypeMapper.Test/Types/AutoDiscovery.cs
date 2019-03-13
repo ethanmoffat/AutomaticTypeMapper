@@ -1,4 +1,6 @@
-﻿namespace AutomaticTypeMapper.Test.Types
+﻿using System;
+
+namespace AutomaticTypeMapper.Test.Types
 {
     public class AutoDiscovery
     {
@@ -79,6 +81,36 @@
 
         [AutoMappedType(IsSingleton = true)]
         public class VariedInterfaceImplementationSingleton3 : VariedInterface { }
+
+        #endregion
+
+        #region Interface Hierarchy / Complicated cases
+
+        public interface IHierarchical1 { }
+        public interface IHierarchical2 : IHierarchical1 { }
+
+        [AutoMappedType]
+        public class HierarchicalImplementation : IHierarchical2 { }
+
+        public interface IComplicatedBase { }
+        public interface IComplicated1 : IComplicatedBase { }
+        public interface IComplicated2 : IComplicatedBase { }
+        public interface IComplicated3 : IComplicated1 { }
+        public interface IComplicated4 : IComplicated2 { }
+        public interface IComplicated5 : IComplicatedBase { }
+
+        [AutoMappedType]
+        public class ComplicatedClass : IComplicated3, IComplicated4, IComplicated5 { }
+
+        public interface IComplicatedSingletonBase { }
+        public interface IComplicatedSingleton1 : IComplicatedSingletonBase { }
+        public interface IComplicatedSingleton2 : IComplicatedSingletonBase { }
+        public interface IComplicatedSingleton3 : IComplicatedSingleton1 { }
+        public interface IComplicatedSingleton4 : IComplicatedSingleton2 { }
+        public interface IComplicatedSingleton5 : IComplicatedSingletonBase { }
+
+        [AutoMappedType(IsSingleton = true)]
+        public class ComplicatedSingletonClass : IComplicatedSingleton3, IComplicatedSingleton4, IComplicatedSingleton5 { }
 
         #endregion
     }

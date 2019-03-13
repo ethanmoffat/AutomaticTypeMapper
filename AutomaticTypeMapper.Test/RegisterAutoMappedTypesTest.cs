@@ -232,5 +232,78 @@ namespace AutomaticTypeMapper.Test
                 _registry.Dispose();
             }
         }
+
+        public class InterfaceHierarchyTests
+        {
+            private static ITypeRegistry _registry;
+
+            [SetUp]
+            public void Setup()
+            {
+                var assemblyName = Assembly.GetExecutingAssembly().FullName;
+                _registry = new UnityRegistry(assemblyName);
+                _registry.RegisterDiscoveredTypes();
+            }
+
+            [Test]
+            public void TaggedClass_ImplementingInterfaceHierarchy_GetsRegisteredForAll()
+            {
+                var instance = _registry.Resolve<AutoDiscovery.IHierarchical2>();
+                var instance2 = _registry.Resolve<AutoDiscovery.IHierarchical2>();
+                var instance3 = _registry.Resolve<AutoDiscovery.IHierarchical1>();
+
+                Assert.That(instance, Is.Not.Null);
+                Assert.That(instance2, Is.Not.Null);
+                Assert.That(instance, Is.Not.SameAs(instance2));
+
+                Assert.That(instance3, Is.Not.Null);
+            }
+
+            [Test]
+            public void TaggedClass_ComplicatedHierarchy_GetsRegisteredForAll()
+            {
+                var instance0 = _registry.Resolve<AutoDiscovery.IComplicatedBase>();
+                var instance1 = _registry.Resolve<AutoDiscovery.IComplicated1>();
+                var instance2 = _registry.Resolve<AutoDiscovery.IComplicated2>();
+                var instance3 = _registry.Resolve<AutoDiscovery.IComplicated3>();
+                var instance4 = _registry.Resolve<AutoDiscovery.IComplicated4>();
+                var instance5 = _registry.Resolve<AutoDiscovery.IComplicated5>();
+
+                var collection = new []
+                {
+                    instance0, instance1, instance2,
+                    instance3, instance4, instance5
+                };
+
+                Assert.That(collection, Is.Unique);
+                Assert.That(collection, Has.None.Null);
+            }
+
+            [Test]
+            public void TaggedClass_ComplicatedHierarchyWithSingleton_GetsRegisteredForAll()
+            {
+                var instance0 = _registry.Resolve<AutoDiscovery.IComplicatedSingletonBase>();
+                var instance1 = _registry.Resolve<AutoDiscovery.IComplicatedSingleton1>();
+                var instance2 = _registry.Resolve<AutoDiscovery.IComplicatedSingleton2>();
+                var instance3 = _registry.Resolve<AutoDiscovery.IComplicatedSingleton3>();
+                var instance4 = _registry.Resolve<AutoDiscovery.IComplicatedSingleton4>();
+                var instance5 = _registry.Resolve<AutoDiscovery.IComplicatedSingleton5>();
+
+                var collection = new[]
+                {
+                    instance0, instance1, instance2,
+                    instance3, instance4, instance5
+                };
+
+                Assert.That(collection, Has.None.Null);
+                Assert.That(collection, Is.All.SameAs(instance0));
+            }
+
+            [TearDown]
+            public void TearDown()
+            {
+                _registry.Dispose();
+            }
+        }
     }
 }
