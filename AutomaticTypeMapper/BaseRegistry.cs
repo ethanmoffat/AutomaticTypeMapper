@@ -26,35 +26,37 @@ namespace AutomaticTypeMapper
         /// <inheritdoc />
         public virtual ITypeRegistry RegisterDiscoveredTypes()
         {
+            var mappedTypeAttributeSets = new List<TypeAttributeSet<MappedTypeAttribute>>();
+            var autoSets = new List<TypeAttributeSet<AutoMappedTypeAttribute>>();
             foreach (var assembly in _assemblies)
             {
-                var mappedTypeAttributeSets = GetTypeAttributeSets<MappedTypeAttribute>(assembly);
-                var autoSets = GetTypeAttributeSets<AutoMappedTypeAttribute>(assembly);
-
-                var typesWithBothAttributes = mappedTypeAttributeSets.Select(x => x.Type).Intersect(autoSets.Select(x => x.Type)).ToList();
-                if (typesWithBothAttributes.Any())
-                {
-                    var typeName = typesWithBothAttributes.First();
-                    throw new InvalidOperationException($"MappedType and AutoMappedType are not supported on the same type ({typeName}).");
-                }
-
-                mappedTypeAttributeSets.AddRange(GetMappedTypeAttributesFromAutoAttributes(autoSets));
-
-                var multipleSameBaseTypesForImplementingType = mappedTypeAttributeSets.Where(
-                    set => set.MappedTypes.GroupBy(x => x.BaseType).Any(x => x.Count() > 1)).ToList();
-                if (multipleSameBaseTypesForImplementingType.Any())
-                {
-                    var typeName = multipleSameBaseTypesForImplementingType.First().Type.Name;
-                    throw new InvalidOperationException($"Type {typeName} is mapped to the same base type multiple times");
-                }
-
-                var baseTypeCount = mappedTypeAttributeSets.SelectMany(x => x.MappedTypes)
-                                                           .Where(x => x.BaseType != null)
-                                                           .GroupBy(x => x.BaseType)
-                                                           .ToDictionary(k => k.First().BaseType, v => v.Count());
-
-                RegisterDiscoveredTypes(mappedTypeAttributeSets, baseTypeCount);
+                mappedTypeAttributeSets.AddRange(GetTypeAttributeSets<MappedTypeAttribute>(assembly));
+                autoSets.AddRange(GetTypeAttributeSets<AutoMappedTypeAttribute>(assembly));
             }
+
+            var typesWithBothAttributes = mappedTypeAttributeSets.Select(x => x.Type).Intersect(autoSets.Select(x => x.Type)).ToList();
+            if (typesWithBothAttributes.Any())
+            {
+                var typeName = typesWithBothAttributes.First();
+                throw new InvalidOperationException($"MappedType and AutoMappedType are not supported on the same type ({typeName}).");
+            }
+
+            mappedTypeAttributeSets.AddRange(GetMappedTypeAttributesFromAutoAttributes(autoSets));
+
+            var multipleSameBaseTypesForImplementingType = mappedTypeAttributeSets.Where(
+                set => set.MappedTypes.GroupBy(x => x.BaseType).Any(x => x.Count() > 1)).ToList();
+            if (multipleSameBaseTypesForImplementingType.Any())
+            {
+                var typeName = multipleSameBaseTypesForImplementingType.First().Type.Name;
+                throw new InvalidOperationException($"Type {typeName} is mapped to the same base type multiple times");
+            }
+
+            var baseTypeCount = mappedTypeAttributeSets.SelectMany(x => x.MappedTypes)
+                                                       .Where(x => x.BaseType != null)
+                                                       .GroupBy(x => x.BaseType)
+                                                       .ToDictionary(k => k.First().BaseType, v => v.Count());
+
+            RegisterDiscoveredTypes(mappedTypeAttributeSets, baseTypeCount);
 
             return this;
         }
