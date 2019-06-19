@@ -1,8 +1,8 @@
 ﻿using AutomaticTypeMapper.Test.Types;
-using InvalidTypes;
 using NUnit.Framework;
 using System.Linq;
 using System.Reflection;
+using WorkingAssembly;
 
 namespace AutomaticTypeMapper.Test
 {
@@ -225,6 +225,24 @@ namespace AutomaticTypeMapper.Test
                 var registry = new UnityRegistry(assemblyName);
 
                 Assert.That(registry.RegisterDiscoveredTypes, Throws.InvalidOperationException);
+            }
+
+            [Test]
+            public void TaggedClass_WithVariedInterface_AcrossAssemblies_GetsRegisteredAsVaried()
+            {
+                var assemblyName = Assembly.GetExecutingAssembly().FullName;
+                using (var registry = new UnityRegistry(assemblyName, "WorkingAssembly"))
+                {
+                    registry.RegisterDiscoveredTypes();
+
+                    var instance = registry.Resolve<NotAcrossAssembly>();
+                    var instances = registry.ResolveAll<UsedAcrossAssemblies>().ToList();
+
+                    Assert.That(instance, Is.Not.Null);
+                    Assert.That(instances, Has.Count.EqualTo(2));
+                    Assert.That(instances, Has.One.TypeOf<UsedAcrossAssembliesImpl1>());
+                    Assert.That(instances, Has.One.TypeOf<UsedAcrossAssembliesImpl2>());
+                }
             }
 
             [TearDown]
