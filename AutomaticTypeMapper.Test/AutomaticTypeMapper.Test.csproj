@@ -73,7 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutomaticTypeMapper\AutomaticTypeMapper.csproj">
-      <Project>{02b42c8f-2128-4772-9107-ef3379cd0fad}</Project>
+      <Project>{6bda4042-09db-420c-9d3d-63dbb2731e2b}</Project>
       <Name>AutomaticTypeMapper</Name>
     </ProjectReference>
     <ProjectReference Include="..\InvalidAutoTypes\InvalidAutoTypes.csproj">

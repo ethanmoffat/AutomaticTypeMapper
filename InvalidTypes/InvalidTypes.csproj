@@ -40,7 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutomaticTypeMapper\AutomaticTypeMapper.csproj">
-      <Project>{02B42C8F-2128-4772-9107-EF3379CD0FAD}</Project>
+      <Project>{6bda4042-09db-420c-9d3d-63dbb2731e2b}</Project>
       <Name>AutomaticTypeMapper</Name>
     </ProjectReference>
   </ItemGroup>
