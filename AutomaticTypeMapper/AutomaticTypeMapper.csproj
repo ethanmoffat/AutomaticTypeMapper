@@ -13,9 +13,9 @@
     <PackageTags>IoC dependency C# inversion-of-control dependency-injection</PackageTags>
     <Copyright>Copyright © 2019-2020 Ethan Moffat</Copyright>
     <Description>Automatic type discovery and mapping for C# projects</Description>
-    <Version>1.3.0</Version>
-    <AssemblyVersion>1.3.0</AssemblyVersion>
-    <PackageVersion>1.3.0</PackageVersion>
+    <Version>1.3.1</Version>
+    <AssemblyVersion>1.3.1</AssemblyVersion>
+    <PackageVersion>1.3.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
