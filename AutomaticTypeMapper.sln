@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticTypeMapper", "AutomaticTypeMapper\AutomaticTypeMapper.csproj", "{02B42C8F-2128-4772-9107-EF3379CD0FAD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticTypeMapper.Test", "AutomaticTypeMapper.Test\AutomaticTypeMapper.Test.csproj", "{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvalidTypes", "InvalidTypes\InvalidTypes.csproj", "{4F519896-6520-493F-AD14-B0C898FD696A}"
@@ -13,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvalidAutoTypes", "Invalid
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkingAssembly", "WorkingAssembly\WorkingAssembly.csproj", "{4F519896-6520-493F-AD14-B0C898FD696B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomaticTypeMapper.Core", "AutomaticTypeMapper.Core\AutomaticTypeMapper.Core.csproj", "{41234D25-7A1E-4F6C-A370-4C2927782DCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomaticTypeMapper", "AutomaticTypeMapper\AutomaticTypeMapper.csproj", "{6BDA4042-09DB-420C-9D3D-63DBB2731E2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{02B42C8F-2128-4772-9107-EF3379CD0FAD}.Debug|x86.ActiveCfg = Debug|x86
-		{02B42C8F-2128-4772-9107-EF3379CD0FAD}.Debug|x86.Build.0 = Debug|x86
-		{02B42C8F-2128-4772-9107-EF3379CD0FAD}.Release|x86.ActiveCfg = Release|x86
-		{02B42C8F-2128-4772-9107-EF3379CD0FAD}.Release|x86.Build.0 = Release|x86
 		{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}.Debug|x86.ActiveCfg = Debug|x86
 		{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}.Debug|x86.Build.0 = Debug|x86
 		{1BBDD498-0F0C-4A74-AC13-55BC19A6667D}.Release|x86.ActiveCfg = Release|x86
@@ -41,10 +35,10 @@ Global
 		{4F519896-6520-493F-AD14-B0C898FD696B}.Debug|x86.Build.0 = Debug|x86
 		{4F519896-6520-493F-AD14-B0C898FD696B}.Release|x86.ActiveCfg = Release|x86
 		{4F519896-6520-493F-AD14-B0C898FD696B}.Release|x86.Build.0 = Release|x86
-		{41234D25-7A1E-4F6C-A370-4C2927782DCF}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{41234D25-7A1E-4F6C-A370-4C2927782DCF}.Debug|x86.Build.0 = Debug|Any CPU
-		{41234D25-7A1E-4F6C-A370-4C2927782DCF}.Release|x86.ActiveCfg = Release|Any CPU
-		{41234D25-7A1E-4F6C-A370-4C2927782DCF}.Release|x86.Build.0 = Release|Any CPU
+		{6BDA4042-09DB-420C-9D3D-63DBB2731E2B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6BDA4042-09DB-420C-9D3D-63DBB2731E2B}.Debug|x86.Build.0 = Debug|Any CPU
+		{6BDA4042-09DB-420C-9D3D-63DBB2731E2B}.Release|x86.ActiveCfg = Release|Any CPU
+		{6BDA4042-09DB-420C-9D3D-63DBB2731E2B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
