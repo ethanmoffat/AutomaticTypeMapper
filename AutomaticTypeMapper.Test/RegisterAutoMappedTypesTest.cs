@@ -1,27 +1,45 @@
 ﻿using AutomaticTypeMapper.Test.Types;
 using NUnit.Framework;
+using System;
 using System.Linq;
 using System.Reflection;
 
 namespace AutomaticTypeMapper.Test
 {
-    [TestFixture]
+    [TestFixture(typeof(UnityRegistry))]
+    [TestFixture(typeof(ServiceCollectionRegistry))]
     public class RegisterAutoMappedTypesTest
     {
-        public class BasicClassTests
-        {
-            private static ITypeRegistry _registry;
+        private readonly Type _registryType;
+        private ITypeRegistry _registry;
 
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+        public RegisterAutoMappedTypesTest(Type registryType)
+        {
+            Assert.That(typeof(ITypeRegistry).IsAssignableFrom(registryType));
+            _registryType = registryType;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            var assemblyName = Assembly.GetExecutingAssembly().FullName;
+            _registry = (ITypeRegistry)Activator.CreateInstance(_registryType, assemblyName);
+            _registry.RegisterDiscoveredTypes();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _registry.Dispose();
+        }
+
+        public class BasicClassTests : RegisterAutoMappedTypesTest
+        {
+            public BasicClassTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
-            public void TaggedClass_NoParameters_IsRegistered()
+            public void AutoMappedClass_NoParameters_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicClass>();
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicClass>();
@@ -32,7 +50,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_WithTag_IsRegistered()
+            public void AutoMappedClass_WithTag_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicClassTagged>(nameof(AutoDiscovery.BasicClassTagged));
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicClassTagged>(nameof(AutoDiscovery.BasicClassTagged));
@@ -43,7 +61,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_Singleton_IsRegistered()
+            public void AutoMappedClass_Singleton_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicClassSingleton>();
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicClassSingleton>();
@@ -54,7 +72,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_SingletonWithTag_IsRegistered()
+            public void AutoMappedClass_SingletonWithTag_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicClassTaggedSingleton>(nameof(AutoDiscovery.BasicClassTaggedSingleton));
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicClassTaggedSingleton>(nameof(AutoDiscovery.BasicClassTaggedSingleton));
@@ -63,28 +81,15 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instance2, Is.Not.Null);
                 Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class InterfaceImplementationTests
+        public class InterfaceImplementationTests : RegisterAutoMappedTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public InterfaceImplementationTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
-            public void TaggedClass_ImplementsInterface_IsRegistered()
+            public void AutoMappedClass_ImplementsInterface_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicInterface>();
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicInterface>();
@@ -95,7 +100,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_ImplementsInterfaceWithTag_IsRegistered()
+            public void AutoMappedClass_ImplementsInterfaceWithTag_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicInterfaceTagged>(nameof(InterfaceImplementationTagged));
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicInterfaceTagged>(nameof(InterfaceImplementationTagged));
@@ -106,7 +111,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_ImplementsInterfaceWithSingleton_IsRegistered()
+            public void AutoMappedClass_ImplementsInterfaceWithSingleton_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicInterfaceSingleton>();
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicInterfaceSingleton>();
@@ -117,7 +122,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_ImplementsInterfaceWithSingletonWithTag_IsRegistered()
+            public void AutoMappedClass_ImplementsInterfaceWithSingletonWithTag_IsRegistered()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BasicInterfaceTaggedSingleton>(nameof(InterfaceImplementationTaggedSingleton));
                 var instance2 = _registry.Resolve<AutoDiscovery.BasicInterfaceTaggedSingleton>(nameof(InterfaceImplementationTaggedSingleton));
@@ -126,28 +131,15 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instance2, Is.Not.Null);
                 Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class VariedInterfaceImplementationTests
+        public class VariedInterfaceImplementationTests : RegisterAutoMappedTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public VariedInterfaceImplementationTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
-            public void TaggedClass_SameBaseInterface_GetsRegisteredAsVariedType()
+            public void AutoMappedClass_SameBaseInterface_GetsRegisteredAsVariedType()
             {
                 var instances = _registry.ResolveAll<AutoDiscovery.VariedInterface>().ToList();
                 var instances2 = _registry.ResolveAll<AutoDiscovery.VariedInterface>().ToList();
@@ -175,28 +167,15 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instances.OfType<AutoDiscovery.VariedInterfaceImplementationSingleton3>().Single(),
                             Is.SameAs(instances2.OfType<AutoDiscovery.VariedInterfaceImplementationSingleton3>().Single()));
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class MultipleAttributesTests
+        public class MultipleAttributesTests : RegisterAutoMappedTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public MultipleAttributesTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
-            public void TaggedClass_MultipleBaseInterfaces_GetsRegisteredAsBoth()
+            public void AutoMappedClass_MultipleBaseInterfaces_GetsRegisteredAsBoth()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BaseInterface1>();
                 var instance2 = _registry.Resolve<AutoDiscovery.BaseInterface2>();
@@ -207,7 +186,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_MultipleBaseInterfaces_Singleton_SameInstanceRegisteredAsBoth()
+            public void AutoMappedClass_MultipleBaseInterfaces_Singleton_SameInstanceRegisteredAsBoth()
             {
                 var instance = _registry.Resolve<AutoDiscovery.BaseInterfaceSingleton1>();
                 var instance2 = _registry.Resolve<AutoDiscovery.BaseInterfaceSingleton2>();
@@ -218,35 +197,22 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_WithSameInterfaceMultipleTimes_ThrowsInvalidOperationException()
+            public void AutoMappedClass_WithSameInterfaceMultipleTimes_ThrowsInvalidOperationException()
             {
                 const string assemblyName = "InvalidAutoTypes";
-                var registry = new UnityRegistry(assemblyName);
+                var registry = (ITypeRegistry)Activator.CreateInstance(_registryType, assemblyName);
 
                 Assert.That(registry.RegisterDiscoveredTypes, Throws.InvalidOperationException);
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class InterfaceHierarchyTests
+        public class InterfaceHierarchyTests : RegisterAutoMappedTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public InterfaceHierarchyTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
-            public void TaggedClass_ImplementingInterfaceHierarchy_GetsRegisteredForAll()
+            public void AutoMappedClass_ImplementingInterfaceHierarchy_GetsRegisteredForAll()
             {
                 var instance = _registry.Resolve<AutoDiscovery.IHierarchical2>();
                 var instance2 = _registry.Resolve<AutoDiscovery.IHierarchical2>();
@@ -260,7 +226,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_ComplicatedHierarchy_GetsRegisteredForAll()
+            public void AutoMappedClass_ComplicatedHierarchy_GetsRegisteredForAll()
             {
                 var instance0 = _registry.Resolve<AutoDiscovery.IComplicatedBase>();
                 var instance1 = _registry.Resolve<AutoDiscovery.IComplicated1>();
@@ -280,7 +246,7 @@ namespace AutomaticTypeMapper.Test
             }
 
             [Test]
-            public void TaggedClass_ComplicatedHierarchyWithSingleton_GetsRegisteredForAll()
+            public void AutoMappedClass_ComplicatedHierarchyWithSingleton_GetsRegisteredForAll()
             {
                 var instance0 = _registry.Resolve<AutoDiscovery.IComplicatedSingletonBase>();
                 var instance1 = _registry.Resolve<AutoDiscovery.IComplicatedSingleton1>();
@@ -297,12 +263,6 @@ namespace AutomaticTypeMapper.Test
 
                 Assert.That(collection, Has.None.Null);
                 Assert.That(collection, Is.All.SameAs(instance0));
-            }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
             }
         }
     }

@@ -1,25 +1,43 @@
 ﻿using AutomaticTypeMapper.Test.Types;
 using NUnit.Framework;
+using System;
 using System.Linq;
 using System.Reflection;
 using WorkingAssembly;
 
 namespace AutomaticTypeMapper.Test
 {
-    [TestFixture]
+    [TestFixture(typeof(UnityRegistry))]
+    [TestFixture(typeof(ServiceCollectionRegistry))]
     public class RegisterDiscoveredTypesTest
     {
-        public class BasicClassTests
-        {
-            private static ITypeRegistry _registry;
+        private readonly Type _registryType;
+        private ITypeRegistry _registry;
 
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+        public RegisterDiscoveredTypesTest(Type registryType)
+        {
+            Assert.That(typeof(ITypeRegistry).IsAssignableFrom(registryType));
+            _registryType = registryType;
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            var assemblyName = Assembly.GetExecutingAssembly().FullName;
+            _registry = (ITypeRegistry)Activator.CreateInstance(_registryType, assemblyName);
+            _registry.RegisterDiscoveredTypes();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _registry.Dispose();
+        }
+
+        public class BasicClassTests : RegisterDiscoveredTypesTest
+        {
+            public BasicClassTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
             public void TaggedClass_NoParameters_IsRegistered()
@@ -64,25 +82,12 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instance2, Is.Not.Null);
                 Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class InterfaceImplementationTests
+        public class InterfaceImplementationTests : RegisterDiscoveredTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public InterfaceImplementationTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
             public void TaggedClass_ImplementsInterface_IsRegistered()
@@ -127,25 +132,12 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instance2, Is.Not.Null);
                 Assert.That(instance, Is.SameAs(instance2)); //singleton
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class VariedInterfaceImplementationTests
+        public class VariedInterfaceImplementationTests : RegisterDiscoveredTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public VariedInterfaceImplementationTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
             public void TaggedClass_SameBaseInterface_GetsRegisteredAsVariedType()
@@ -176,25 +168,12 @@ namespace AutomaticTypeMapper.Test
                 Assert.That(instances.OfType<VariedInterfaceImplementationSingleton3>().Single(),
                             Is.SameAs(instances2.OfType<VariedInterfaceImplementationSingleton3>().Single()));
             }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
-            }
         }
 
-        public class MultipleAttributesTests
+        public class MultipleAttributesTests : RegisterDiscoveredTypesTest
         {
-            private static ITypeRegistry _registry;
-
-            [SetUp]
-            public void Setup()
-            {
-                var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                _registry = new UnityRegistry(assemblyName);
-                _registry.RegisterDiscoveredTypes();
-            }
+            public MultipleAttributesTests(Type registryType)
+                : base(registryType) { }
 
             [Test]
             public void TaggedClass_MultipleBaseInterfaces_GetsRegisteredAsBoth()
@@ -222,7 +201,7 @@ namespace AutomaticTypeMapper.Test
             public void TaggedClass_WithSameInterfaceMultipleTimes_ThrowsInvalidOperationException()
             {
                 const string assemblyName = "InvalidTypes";
-                var registry = new UnityRegistry(assemblyName);
+                var registry = (ITypeRegistry)Activator.CreateInstance(_registryType, assemblyName);
 
                 Assert.That(registry.RegisterDiscoveredTypes, Throws.InvalidOperationException);
             }
@@ -231,7 +210,7 @@ namespace AutomaticTypeMapper.Test
             public void TaggedClass_WithVariedInterface_AcrossAssemblies_GetsRegisteredAsVaried()
             {
                 var assemblyName = Assembly.GetExecutingAssembly().FullName;
-                using (var registry = new UnityRegistry(assemblyName, "WorkingAssembly"))
+                using (var registry = (ITypeRegistry)Activator.CreateInstance(_registryType, assemblyName, "WorkingAssembly"))
                 {
                     registry.RegisterDiscoveredTypes();
 
@@ -243,12 +222,6 @@ namespace AutomaticTypeMapper.Test
                     Assert.That(instances, Has.One.TypeOf<UsedAcrossAssembliesImpl1>());
                     Assert.That(instances, Has.One.TypeOf<UsedAcrossAssembliesImpl2>());
                 }
-            }
-
-            [TearDown]
-            public void TearDown()
-            {
-                _registry.Dispose();
             }
         }
     }
