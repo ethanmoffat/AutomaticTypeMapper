@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net462</TargetFrameworks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net462</TargetFrameworks>
     <AssemblyName>AutomaticTypeMapper</AssemblyName>
     <RootNamespace>AutomaticTypeMapper</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
