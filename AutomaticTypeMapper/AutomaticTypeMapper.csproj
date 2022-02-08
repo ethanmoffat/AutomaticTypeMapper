@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.1;net462</TargetFrameworks>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net462</TargetFrameworks>
     <AssemblyName>AutomaticTypeMapper</AssemblyName>
     <RootNamespace>AutomaticTypeMapper</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
@@ -11,11 +10,11 @@
     <RepositoryUrl>https://github.com/ethanmoffat/AutomaticTypeMapper</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>IoC dependency C# inversion-of-control dependency-injection</PackageTags>
-    <Copyright>Copyright © 2019-2020 Ethan Moffat</Copyright>
+    <Copyright>Copyright © 2019-2022 Ethan Moffat</Copyright>
     <Description>Automatic type discovery and mapping for C# projects</Description>
-    <Version>1.4.0</Version>
-    <AssemblyVersion>1.4.0</AssemblyVersion>
-    <PackageVersion>1.4.0</PackageVersion>
+    <Version>1.4.1</Version>
+    <AssemblyVersion>1.4.1</AssemblyVersion>
+    <PackageVersion>1.4.1</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
