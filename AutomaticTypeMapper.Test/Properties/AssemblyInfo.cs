@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AutomaticTypeMapper.Test")]
-[assembly: AssemblyCopyright("Copyright © Ethan Moffat 2019")]
+[assembly: AssemblyCopyright("Copyright © Ethan Moffat 2019-2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
